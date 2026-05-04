@@ -1,0 +1,43 @@
+import { Page, Locator } from "@playwright/test";
+
+export class CheckoutInfoPage {
+  readonly firstNameInp: Locator;
+  readonly lastNameInp: Locator;
+  readonly zipCodeInp: Locator;
+  readonly cancelBtn: Locator;
+  readonly continueBtn: Locator;
+
+  constructor(private page: Page) {
+    this.firstNameInp = page.locator('[data-test="firstName"]');
+    this.lastNameInp = page.locator('[data-test="lastName"]');
+    this.zipCodeInp = page.locator('[data-test="postalCode"]');
+    this.cancelBtn = page.locator('[data-test="cancel"]');
+    this.continueBtn = page.locator('[data-test="continue"]');
+  }
+
+  async fillFirstName(firstName: string) {
+    await this.firstNameInp.fill(firstName);
+  }
+
+  async fillLastName(lastName: string) {
+    await this.lastNameInp.fill(lastName);
+  }
+
+  async fillZipCode(zipCode: string) {
+    await this.zipCodeInp.fill(zipCode);
+  }
+
+  async fillForm(firstName: string, lastName: string, zipCode: string) {
+    await this.firstNameInp.fill(firstName);
+    await this.lastNameInp.fill(lastName);
+    await this.zipCodeInp.fill(zipCode);
+  }
+
+  async clickCancel() {
+    await this.cancelBtn.click();
+  }
+
+  async clickContinue() {
+    await this.continueBtn.click();
+  }
+}

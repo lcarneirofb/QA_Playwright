@@ -1,0 +1,48 @@
+import { Page, Locator } from "@playwright/test";
+import { CartItem } from "../../components/CartItem";
+
+export class CheckoutOverviewPage {
+  readonly cartItem: Locator;
+  readonly cartPrice: Locator;
+  readonly taxValue: Locator;
+  readonly cartTotal: Locator;
+  readonly cancelBtn: Locator;
+  readonly finishBtn: Locator;
+
+  constructor(private page: Page) {
+    this.cartItem = page.locator(".inventory-item");
+    this.cartPrice = page.locator('[data-test="subtotal-label"]');
+    this.taxValue = page.locator('[data-test="tax-labe"]');
+    this.cartTotal = page.locator('[data-test="total-label"]');
+    this.cancelBtn = page.locator('[data-test="cancel"]');
+    this.finishBtn = page.locator('[data-test="finish"]');
+  }
+
+  async getCartPrice() {
+    return (await this.cartPrice.textContent()) ?? "";
+  }
+
+  async getTaxPrice() {
+    return (await this.taxValue.textContent()) ?? "";
+  }
+
+  async getCartTotal() {
+    return (await this.cartTotal.textContent()) ?? "";
+  }
+
+  async clickCancel() {
+    await this.cancelBtn.click();
+  }
+
+  async clickFinish() {
+    await this.finishBtn.click();
+  }
+
+  getItemByName(name: string): CartItem {
+    const item = this.page.locator(".inventory_item").filter({
+      has: this.page.getByText(name),
+    });
+
+    return new CartItem(item);
+  }
+}

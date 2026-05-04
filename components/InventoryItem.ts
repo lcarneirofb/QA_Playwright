@@ -1,17 +1,21 @@
 import { Locator } from "@playwright/test";
 
 export class InventoryItem {
-  constructor(private root: Locator) {}
+  readonly name: Locator;
+  readonly price: Locator;
+  readonly addCartBtn: Locator;
 
-  name = this.root.locator(".inventory_item_name");
-  price = this.root.locator(".inventory_item_price");
-  addCartBtn = this.root.locator("button");
+  constructor(private root: Locator) {
+    this.name = root.locator(".inventory_item_name");
+    this.price = root.locator(".inventory_item_price");
+    this.addCartBtn = root.locator("button");
+  }
 
   async addToCart() {
     await this.addCartBtn.click();
   }
 
   async getName() {
-    return await this.name.textContent();
+    return (await this.name.textContent()) ?? "";
   }
 }
